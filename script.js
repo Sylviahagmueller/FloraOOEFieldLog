@@ -1,6 +1,6 @@
 
 let funde = {};
-let arten = {};
+let arten = {}; 
 let lastPosition = null;
 
 fetch("arten.json")
