@@ -1,15 +1,35 @@
+
 <!DOCTYPE html>
 <html lang="de">
 <head>
     <meta charset="UTF-8">
     <title>FloraOOE Field Log</title>
     <link rel="stylesheet" href="style.css">
+    <style>
+        #suggestions {
+            border: 1px solid #ccc;
+            max-height: 150px;
+            overflow-y: auto;
+            position: absolute;
+            background: white;
+            z-index: 1000;
+            width: 100%;
+        }
+        #suggestions div {
+            padding: 0.5rem;
+            cursor: pointer;
+        }
+        #suggestions div:hover {
+            background-color: #e3f2fd;
+        }
+    </style>
 </head>
 <body>
     <h1>FloraOOE Field Log</h1>
 
-    <label for="search">Artkürzel eingeben (z. B. bel per):</label><br>
-    <input type="text" id="search" placeholder="z.B. bel per für Bellis perennis" autofocus>
+    <label for="search">Artkürzel oder Namen (z. B. ver per, Veronica):</label><br>
+    <input type="text" id="search" placeholder="z.B. bel per oder Veronica" oninput="showSuggestions()" autocomplete="off">
+    <div id="suggestions"></div>
     <button onclick="recordFund()">Fund speichern</button>
 
     <p id="status"></p>
