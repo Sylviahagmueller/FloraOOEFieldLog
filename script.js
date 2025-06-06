@@ -1,11 +1,13 @@
-let funde = []; 
-let arten = {}; 
+let funde = [];
+let arten = {};
 let lastPosition = null;
 
+// Lade Artenliste
 fetch("arten.json")
     .then(response => response.json())
     .then(data => arten = data);
 
+// Hole GPS-Position
 navigator.geolocation.getCurrentPosition(
     (position) => {
         lastPosition = position.coords;
@@ -15,6 +17,7 @@ navigator.geolocation.getCurrentPosition(
     }
 );
 
+// Vorschläge anzeigen
 function showSuggestions() {
     const input = document.getElementById("search").value.toLowerCase();
     const suggestionBox = document.getElementById("suggestions");
@@ -37,6 +40,7 @@ function showSuggestions() {
     });
 }
 
+// Fund speichern
 function recordFund() {
     const input = document.getElementById("search").value.trim().toLowerCase();
     const status = document.getElementById("status");
@@ -47,12 +51,13 @@ function recordFund() {
     }
 
     const timestamp = new Date().toISOString();
+
     funde.push({
         kuerzel: input,
         name: arten[input],
         zeit: timestamp,
-        lat: lastPosition ? lastPosition.latitude : "N/A",
-        lon: lastPosition ? lastPosition.longitude : "N/A"
+        lat: lastPosition ? lastPosition.latitude.toFixed(5) : "N/A",
+        lon: lastPosition ? lastPosition.longitude.toFixed(5) : "N/A"
     });
 
     status.textContent = `Fund gespeichert: ${arten[input]}`;
@@ -61,7 +66,7 @@ function recordFund() {
     updateList();
 }
 
-
+// Tabelle aktualisieren
 function updateList() {
     const tbody = document.querySelector("#fundTable tbody");
     tbody.innerHTML = "";
@@ -70,8 +75,8 @@ function updateList() {
         const date = new Date(f.zeit);
         const dateStr = date.toLocaleDateString("de-DE");
         const timeStr = date.toLocaleTimeString("de-DE", { hour: "2-digit", minute: "2-digit" });
-
-        const [gattung, art] = f.name.split(" ");
+        const [gattung, ...rest] = f.name.split(" ");
+        const art = rest.join(" ");
 
         const row = document.createElement("tr");
         row.innerHTML = `
@@ -84,21 +89,7 @@ function updateList() {
     });
 }
 
-function sortTable(colIndex) {
-    const table = document.getElementById("fundTable");
-    const rows = Array.from(table.tBodies[0].rows);
-    const ascending = table.getAttribute("data-sort-dir") !== "asc";
-    rows.sort((a, b) => {
-        const aText = a.cells[colIndex].textContent.trim();
-        const bText = b.cells[colIndex].textContent.trim();
-        return ascending ? aText.localeCompare(bText) : bText.localeCompare(aText);
-    });
-    table.setAttribute("data-sort-dir", ascending ? "asc" : "desc");
-    rows.forEach(row => table.tBodies[0].appendChild(row));
-}
-
-
-
+// CSV exportieren
 function exportCSV() {
     let csv = "Kürzel,Name,Zeit,Lat,Lon\n";
     funde.forEach(f => {
@@ -114,3 +105,16 @@ function exportCSV() {
     URL.revokeObjectURL(url);
 }
 
+// Tabelle sortieren
+function sortTable(colIndex) {
+    const table = document.getElementById("fundTable");
+    const rows = Array.from(table.tBodies[0].rows);
+    const ascending = table.getAttribute("data-sort-dir") !== "asc";
+    rows.sort((a, b) => {
+        const aText = a.cells[colIndex].textContent.trim();
+        const bText = b.cells[colIndex].textContent.trim();
+        return ascending ? aText.localeCompare(bText) : bText.localeCompare(aText);
+    });
+    table.setAttribute("data-sort-dir", ascending ? "asc" : "desc");
+    rows.forEach(row => table.tBodies[0].appendChild(row));
+}
