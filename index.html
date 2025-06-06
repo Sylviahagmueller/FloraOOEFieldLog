@@ -26,9 +26,11 @@
 </head>
 <body>
     <h1>FloraOOE Field Log</h1>
+    <h2>Funderfassung im Gelände</h2>
+    <p>Geben Sie das Kürzel oder einen Teil des Artnamens ein. Wählen Sie den Fund aus der Liste aus und speichern Sie ihn. Die Position wird automatisch erfasst.</p>
 
-    <label for="search">Artkürzel oder Namen (z. B. ver per, Veronica):</label><br>
-    <input type="text" id="search" placeholder="z.B. bel per oder Veronica" oninput="showSuggestions()" autocomplete="off">
+    <label for="search">Artkürzel oder Namen (z. B. BEL PER, Bellis perennis):</label><br>
+    <input type="text" id="search" placeholder="z.B. bel per oder Bellis perennis" oninput="showSuggestions()" autocomplete="off">
     <div id="suggestions"></div>
     <button onclick="recordFund()">Fund speichern</button>
 
