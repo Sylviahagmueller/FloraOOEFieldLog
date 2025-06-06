@@ -21,7 +21,20 @@
     <p id="status"></p>
 
     <h2>Erfasste Funde</h2>
-    <ul id="fundList"></ul>
+        <div class="card">
+          <table id="fundTable">
+            <thead>
+              <tr>
+                <th onclick="sortTable(0)">Gattung</th>
+                <th onclick="sortTable(1)">Art</th>
+                <th onclick="sortTable(2)">Datum</th>
+                <th onclick="sortTable(3)">Koordinaten</th>
+              </tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+        </div>
+
 
     <button onclick="exportCSV()">CSV exportieren</button>
 
