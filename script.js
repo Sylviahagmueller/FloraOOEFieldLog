@@ -63,17 +63,40 @@ function recordFund() {
 
 
 function updateList() {
-    const list = document.getElementById("fundList");
-    list.innerHTML = "";
+    const tbody = document.querySelector("#fundTable tbody");
+    tbody.innerHTML = "";
+
     funde.forEach(f => {
         const date = new Date(f.zeit);
         const dateStr = date.toLocaleDateString("de-DE");
         const timeStr = date.toLocaleTimeString("de-DE", { hour: "2-digit", minute: "2-digit" });
-        const li = document.createElement("li");
-        li.textContent = `${f.name} – ${dateStr}, ${timeStr} – [${f.lat}, ${f.lon}]`;
-        list.appendChild(li);
+
+        const [gattung, art] = f.name.split(" ");
+
+        const row = document.createElement("tr");
+        row.innerHTML = `
+            <td>${gattung}</td>
+            <td>${art}</td>
+            <td>${dateStr}, ${timeStr}</td>
+            <td>${f.lat}, ${f.lon}</td>
+        `;
+        tbody.appendChild(row);
     });
 }
+
+function sortTable(colIndex) {
+    const table = document.getElementById("fundTable");
+    const rows = Array.from(table.tBodies[0].rows);
+    const ascending = table.getAttribute("data-sort-dir") !== "asc";
+    rows.sort((a, b) => {
+        const aText = a.cells[colIndex].textContent.trim();
+        const bText = b.cells[colIndex].textContent.trim();
+        return ascending ? aText.localeCompare(bText) : bText.localeCompare(aText);
+    });
+    table.setAttribute("data-sort-dir", ascending ? "asc" : "desc");
+    rows.forEach(row => table.tBodies[0].appendChild(row));
+}
+
 
 
 function exportCSV() {
