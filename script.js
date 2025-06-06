@@ -1,5 +1,4 @@
-
-let funde = {};
+let funde = []; 
 let arten = {}; 
 let lastPosition = null;
 
@@ -47,18 +46,14 @@ function recordFund() {
         return;
     }
 
-    //if (funde[input]) {
-    //    status.textContent = "Diese Art wurde bereits erfasst.";
-    //    return;
-    //}
-
     const timestamp = new Date().toISOString();
-    funde[input] = {
+    funde.push({
+        kuerzel: input,
         name: arten[input],
         zeit: timestamp,
         lat: lastPosition ? lastPosition.latitude : "N/A",
         lon: lastPosition ? lastPosition.longitude : "N/A"
-    };
+    });
 
     status.textContent = `Fund gespeichert: ${arten[input]}`;
     document.getElementById("search").value = "";
@@ -66,28 +61,26 @@ function recordFund() {
     updateList();
 }
 
+
 function updateList() {
     const list = document.getElementById("fundList");
     list.innerHTML = "";
-    for (const key in funde) {
-        const f = funde[key];
-        const li = document.createElement("li");
-        //li.textContent = `${f.name} – ${f.zeit} – [${f.lat}, ${f.lon}]`;
+    funde.forEach(f => {
         const date = new Date(f.zeit);
         const dateStr = date.toLocaleDateString("de-DE");
         const timeStr = date.toLocaleTimeString("de-DE", { hour: "2-digit", minute: "2-digit" });
+        const li = document.createElement("li");
         li.textContent = `${f.name} – ${dateStr}, ${timeStr} – [${f.lat}, ${f.lon}]`;
-
         list.appendChild(li);
-    }
+    });
 }
+
 
 function exportCSV() {
     let csv = "Kürzel,Name,Zeit,Lat,Lon\n";
-    for (const key in funde) {
-        const f = funde[key];
-        csv += `${key},${f.name},${f.zeit},${f.lat},${f.lon}\n`;
-    }
+    funde.forEach(f => {
+        csv += `${f.kuerzel},${f.name},${f.zeit},${f.lat},${f.lon}\n`;
+    });
 
     const blob = new Blob([csv], { type: "text/csv" });
     const url = URL.createObjectURL(blob);
@@ -97,3 +90,4 @@ function exportCSV() {
     a.click();
     URL.revokeObjectURL(url);
 }
+
