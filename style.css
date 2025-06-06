@@ -1,0 +1,73 @@
+/* Grundlayout */
+body {
+    font-family: sans-serif;
+    max-width: 600px;
+    margin: 2rem auto;
+    padding: 1rem;
+    background-color: #f8f9fa;
+    color: #212529;
+}
+
+/* Titel */
+h1 {
+    text-align: center;
+    color: #2b6777;
+}
+
+/* Suchfeld und Button */
+input[type="text"] {
+    width: 100%;
+    padding: 0.75rem;
+    margin: 0.5rem 0;
+    font-size: 1rem;
+    box-sizing: border-box;
+}
+
+button {
+    padding: 0.6rem 1.2rem;
+    font-size: 1rem;
+    background-color: #52ab98;
+    border: none;
+    color: white;
+    border-radius: 4px;
+    cursor: pointer;
+    margin: 0.5rem 0;
+}
+
+button:hover {
+    background-color: #3d8b82;
+}
+
+/* Statusanzeige */
+#status {
+    margin-top: 0.5rem;
+    font-weight: bold;
+    color: #007b5e;
+}
+
+/* Fundliste */
+#fundList {
+    list-style-type: none;
+    padding-left: 0;
+}
+
+#fundList li {
+    background-color: #e3f2fd;
+    border: 1px solid #b3d7ff;
+    margin-bottom: 0.5rem;
+    padding: 0.5rem;
+    border-radius: 4px;
+    font-size: 0.95rem;
+}
+
+/* Responsive */
+@media (max-width: 600px) {
+    body {
+        padding: 1rem;
+    }
+
+    input[type="text"],
+    button {
+        font-size: 1rem;
+    }
+}
