@@ -47,10 +47,10 @@ function recordFund() {
         return;
     }
 
-    if (funde[input]) {
-        status.textContent = "Diese Art wurde bereits erfasst.";
-        return;
-    }
+    //if (funde[input]) {
+    //    status.textContent = "Diese Art wurde bereits erfasst.";
+    //    return;
+    //}
 
     const timestamp = new Date().toISOString();
     funde[input] = {
@@ -72,7 +72,12 @@ function updateList() {
     for (const key in funde) {
         const f = funde[key];
         const li = document.createElement("li");
-        li.textContent = `${f.name} – ${f.zeit} – [${f.lat}, ${f.lon}]`;
+        //li.textContent = `${f.name} – ${f.zeit} – [${f.lat}, ${f.lon}]`;
+        const date = new Date(f.zeit);
+        const dateStr = date.toLocaleDateString("de-DE");
+        const timeStr = date.toLocaleTimeString("de-DE", { hour: "2-digit", minute: "2-digit" });
+        li.textContent = `${f.name} – ${dateStr}, ${timeStr} – [${f.lat}, ${f.lon}]`;
+
         list.appendChild(li);
     }
 }
