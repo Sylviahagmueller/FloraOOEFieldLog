@@ -50,21 +50,28 @@ function recordFund() {
         return;
     }
 
-    const timestamp = new Date().toISOString();
+    navigator.geolocation.getCurrentPosition(position => {
+        const coords = position.coords;
+        const timestamp = new Date().toISOString();
 
-    funde.push({
-        kuerzel: input,
-        name: arten[input],
-        zeit: timestamp,
-        lat: lastPosition ? lastPosition.latitude.toFixed(5) : "N/A",
-        lon: lastPosition ? lastPosition.longitude.toFixed(5) : "N/A"
+        funde.push({
+            kuerzel: input,
+            name: arten[input],
+            zeit: timestamp,
+            lat: coords.latitude.toFixed(5),
+            lon: coords.longitude.toFixed(5)
+        });
+
+        status.textContent = `Fund gespeichert: ${arten[input]}`;
+        document.getElementById("search").value = "";
+        document.getElementById("suggestions").innerHTML = "";
+        updateList();
+    }, error => {
+        status.textContent = "⚠️ Standort konnte nicht erfasst werden.";
+        console.error("Geolocation-Fehler:", error);
     });
-
-    status.textContent = `Fund gespeichert: ${arten[input]}`;
-    document.getElementById("search").value = "";
-    document.getElementById("suggestions").innerHTML = "";
-    updateList();
 }
+
 
 // Tabelle aktualisieren
 function updateList() {
