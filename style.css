@@ -1,32 +1,44 @@
 /* Grundlayout */
 body {
-    font-family: sans-serif;
-    max-width: 600px;
-    margin: 2rem auto;
-    padding: 1rem;
-    background-color: #f8f9fa;
-    color: #212529;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #f0f4f8;
+    color: #333;
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 2rem;
 }
 
-/* Titel */
-h1 {
+/* Überschriften */
+h1, h2 {
+    color: #2c3e50;
     text-align: center;
-    color: #2b6777;
+}
+
+h1 {
+    margin-bottom: 0.5rem;
+}
+
+h2 {
+    margin-top: 0;
+    font-weight: normal;
+    color: #34495e;
 }
 
 /* Suchfeld und Button */
 input[type="text"] {
     width: 100%;
     padding: 0.75rem;
-    margin: 0.5rem 0;
+    margin: 1rem 0;
     font-size: 1rem;
+    border: 1px solid #ccc;
+    border-radius: 4px;
     box-sizing: border-box;
 }
 
 button {
     padding: 0.6rem 1.2rem;
     font-size: 1rem;
-    background-color: #52ab98;
+    background-color: #3498db;
     border: none;
     color: white;
     border-radius: 4px;
@@ -35,14 +47,14 @@ button {
 }
 
 button:hover {
-    background-color: #3d8b82;
+    background-color: #2980b9;
 }
 
 /* Statusanzeige */
 #status {
     margin-top: 0.5rem;
     font-weight: bold;
-    color: #007b5e;
+    color: #27ae60;
 }
 
 /* Fundliste */
@@ -52,12 +64,33 @@ button:hover {
 }
 
 #fundList li {
-    background-color: #e3f2fd;
-    border: 1px solid #b3d7ff;
+    background-color: #ecf0f1;
+    border: 1px solid #bdc3c7;
     margin-bottom: 0.5rem;
     padding: 0.5rem;
     border-radius: 4px;
     font-size: 0.95rem;
+}
+
+/* Vorschlagsliste */
+#suggestions {
+    border: 1px solid #ccc;
+    max-height: 150px;
+    overflow-y: auto;
+    position: absolute;
+    background: white;
+    z-index: 1000;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+#suggestions div {
+    padding: 0.5rem;
+    cursor: pointer;
+}
+
+#suggestions div:hover {
+    background-color: #dfe6e9;
 }
 
 /* Responsive */
