@@ -57,10 +57,10 @@ function recordFund() {
     navigator.geolocation.getCurrentPosition(position => {
         const lat = position.coords.latitude;
         const lon = position.coords.longitude;
-        status.textContent = "Standort erfasst: ${lat.toFixed(5)}, ${lon.toFixed(5)}";
+        status.textContent = `Standort erfasst: ${lat.toFixed(5)}, ${lon.toFixed(5)}`;
         saveFund(input, timestamp, lat, lon);
     }, error => {
-        status.textContent = "⚠️ Standort konnte nicht erfasst werden: ${error.message}";
+        status.textContent = `Standort konnte nicht erfasst werden: ${error.message}`;
         saveFund(input, timestamp, "N/A", "N/A");
     });
 }
@@ -128,7 +128,7 @@ function exportCSV() {
     const dateStr = now.toISOString().split("T")[0]; // z. B. 2025-06-10
     const timeStr = now.toTimeString().slice(0,5).replace(":", "-"); // z. B. 14-30
     const safeProjekt = projekt !== "" ? "_" + projekt.replaceAll(" ", "_") : "";
-    a.download = "Funde${safeProjekt}_${dateStr}_${timeStr}.csv";
+    a.download = `Funde${safeProjekt}_${dateStr}_${timeStr}.csv`;
     a.click();
     URL.revokeObjectURL(url);
 }
