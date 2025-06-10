@@ -74,8 +74,8 @@ function saveFund(input, timestamp, lat, lon) {
         kuerzel: input,
         name: arten[input],
         zeit: timestamp,
-        lat: typeof lat === "number" ? lat.toFixed(5) : lat,
-        lon: typeof lon === "number" ? lon.toFixed(5) : lon,
+        lat: lat, //typeof lat === "number" ? lat.toFixed(5) : lat,
+        lon: lon, //typeof lon === "number" ? lon.toFixed(5) : lon,
         beobachter: beobachter,
         projekt: projekt
     });
