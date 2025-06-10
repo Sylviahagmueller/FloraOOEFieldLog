@@ -8,14 +8,14 @@ fetch("arten.json")
     .then(data => arten = data);
 
 // Hole GPS-Position
-navigator.geolocation.getCurrentPosition(
+/*navigator.geolocation.getCurrentPosition(
     (position) => {
         lastPosition = position.coords;
     },
     (error) => {
         console.error("GPS-Fehler:", error);
     }
-);
+);*/
 
 // Vorschläge anzeigen
 function showSuggestions() {
