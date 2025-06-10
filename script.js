@@ -58,10 +58,10 @@ function recordFund() {
         const lat = position.coords.latitude;
         const lon = position.coords.longitude;
         status.textContent = `Standort erfasst: ${lat.toFixed(5)}, ${lon.toFixed(5)}`;
-        //saveFund(input, timestamp, lat, lon);
+        saveFund(input, timestamp, lat, lon);
     }, error => {
         status.textContent = `Standort konnte nicht erfasst werden: ${error.message}`;
-        //saveFund(input, timestamp, "N/A", "N/A");
+        saveFund(input, timestamp, "N/A", "N/A");
     });
 }
 
@@ -74,13 +74,13 @@ function saveFund(input, timestamp, lat, lon) {
         kuerzel: input,
         name: arten[input],
         zeit: timestamp,
-        lat: lat, //typeof lat === "number" ? lat.toFixed(5) : lat,
-        lon: lon, //typeof lon === "number" ? lon.toFixed(5) : lon,
+        lat: typeof lat === "number" ? lat.toFixed(5) : lat,
+        lon: typeof lon === "number" ? lon.toFixed(5) : lon,
         beobachter: beobachter,
         projekt: projekt
     });
 
-    //document.getElementById("status").textContent = `Fund gespeichert: ${arten[input]}`;
+    document.getElementById("status").textContent = `Fund gespeichert: ${arten[input]}`;
     document.getElementById("search").value = "";
     document.getElementById("suggestions").innerHTML = "";
     updateList();
