@@ -128,7 +128,7 @@ function exportCSV() {
     const dateStr = now.toISOString().split("T")[0]; // z. B. 2025-06-10
     const timeStr = now.toTimeString().slice(0,5).replace(":", "-"); // z. B. 14-30
     const safeProjekt = projekt !== "" ? "_" + projekt.replaceAll(" ", "_") : "";
-    a.download = `Funde${safeProjekt}_${dateStr}_${timeStr}.csv`;
+    a.download = `Funde${safeProjekt}_${dateStr}_${timeStr}.csv`;  // Backticks statt Anführungszeichen
     a.click();
     URL.revokeObjectURL(url);
 }
