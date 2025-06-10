@@ -63,12 +63,17 @@ function recordFund() {
 }
 
 function saveFund(input, timestamp, lat, lon) {
+    const beobachter = document.getElementById("beobachter").value.trim();
+    const projekt = document.getElementById("projekt").value.trim();
+
     funde.push({
         kuerzel: input,
         name: arten[input],
         zeit: timestamp,
         lat: typeof lat === "number" ? lat.toFixed(5) : lat,
-        lon: typeof lon === "number" ? lon.toFixed(5) : lon
+        lon: typeof lon === "number" ? lon.toFixed(5) : lon,
+        beobachter: beobachter,
+        projekt: projekt
     });
 
     document.getElementById("status").textContent = `Fund gespeichert: ${arten[input]}`;
@@ -76,6 +81,7 @@ function saveFund(input, timestamp, lat, lon) {
     document.getElementById("suggestions").innerHTML = "";
     updateList();
 }
+
 
 // Tabelle aktualisieren
 function updateList() {
@@ -102,9 +108,10 @@ function updateList() {
 
 // CSV exportieren
 function exportCSV() {
-    let csv = "Kürzel,Name,Zeit,Lat,Lon\n";
+    let csv = "Kürzel,Name,Zeit,Lat,Lon,Beobachter,Projekt\n";
+
     funde.forEach(f => {
-        csv += `${f.kuerzel},${f.name},${f.zeit},${f.lat},${f.lon}\n`;
+        csv += `${f.kuerzel},${f.name},${f.zeit},${f.lat},${f.lon},${f.beobachter},${f.projekt}\n`;
     });
 
     const blob = new Blob([csv], { type: "text/csv" });
