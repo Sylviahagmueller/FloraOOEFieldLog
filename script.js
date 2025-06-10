@@ -50,28 +50,32 @@ function recordFund() {
         return;
     }
 
+    const timestamp = new Date().toISOString();
+
+    // Versuche Standort zu ermitteln, aber speichere auch ohne
     navigator.geolocation.getCurrentPosition(position => {
-        const coords = position.coords;
-        const timestamp = new Date().toISOString();
-
-        funde.push({
-            kuerzel: input,
-            name: arten[input],
-            zeit: timestamp,
-            lat: coords.latitude.toFixed(5),
-            lon: coords.longitude.toFixed(5)
-        });
-
-        status.textContent = `Fund gespeichert: ${arten[input]}`;
-        document.getElementById("search").value = "";
-        document.getElementById("suggestions").innerHTML = "";
-        updateList();
+        saveFund(input, timestamp, position.coords.latitude, position.coords.longitude);
     }, error => {
-        status.textContent = "⚠️ Standort konnte nicht erfasst werden.";
-        console.error("Geolocation-Fehler:", error);
+        console.warn("Standort nicht verfügbar, speichere ohne Koordinaten:", error.message);
+        status.textContent = "⚠️ Standort konnte nicht erfasst werden. ${error.message}";
+        saveFund(input, timestamp, "N/A", "N/A");
     });
 }
 
+function saveFund(input, timestamp, lat, lon) {
+    funde.push({
+        kuerzel: input,
+        name: arten[input],
+        zeit: timestamp,
+        lat: typeof lat === "number" ? lat.toFixed(5) : lat,
+        lon: typeof lon === "number" ? lon.toFixed(5) : lon
+    });
+
+    document.getElementById("status").textContent = `Fund gespeichert: ${arten[input]}`;
+    document.getElementById("search").value = "";
+    document.getElementById("suggestions").innerHTML = "";
+    updateList();
+}
 
 // Tabelle aktualisieren
 function updateList() {
