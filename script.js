@@ -53,14 +53,18 @@ function recordFund() {
     const timestamp = new Date().toISOString();
 
     // Versuche Standort zu ermitteln, aber speichere auch ohne
+    status.textContent = "📡 Versuche Standort zu ermitteln …";
     navigator.geolocation.getCurrentPosition(position => {
-        saveFund(input, timestamp, position.coords.latitude, position.coords.longitude);
+        const lat = position.coords.latitude;
+        const lon = position.coords.longitude;
+        status.textContent = "Standort erfasst: ${lat.toFixed(5)}, ${lon.toFixed(5)}";
+        saveFund(input, timestamp, lat, lon);
     }, error => {
-        console.warn("Standort nicht verfügbar, speichere ohne Koordinaten:", error.message);
-        status.textContent = "⚠️ Standort konnte nicht erfasst werden. ${error.message}";
+        status.textContent = "⚠️ Standort konnte nicht erfasst werden: ${error.message}";
         saveFund(input, timestamp, "N/A", "N/A");
     });
 }
+
 
 function saveFund(input, timestamp, lat, lon) {
     const beobachter = document.getElementById("beobachter").value.trim();
