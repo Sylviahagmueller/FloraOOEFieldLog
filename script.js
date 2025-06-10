@@ -119,19 +119,41 @@ function exportCSV() {
     });
 
     const blob = new Blob([csv], { type: "text/csv" });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement("a");
-    a.href = url;
+    const fileName = generateFilename();
+    const file = new File([blob], fileName, { type: "text/csv" });
 
+    // Prüfe, ob Teilen möglich ist (Mobilgerät)
+    if (navigator.canShare && navigator.canShare({ files: [file] })) {
+        navigator.share({
+            title: "Funde exportieren",
+            text: "Hier ist die exportierte Fundliste als CSV-Datei.",
+            files: [file]
+        }).catch(error => {
+            alert("Teilen abgebrochen oder nicht verfügbar.");
+            console.error("Share error:", error);
+        });
+    } else {
+        // Fallback für Desktop: normaler Download
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement("a");
+        a.href = url;
+        a.download = fileName;
+        document.body.appendChild(a);
+        a.click();
+        a.remove();
+        URL.revokeObjectURL(url);
+    }
+}
+
+function generateFilename() {
     const projekt = document.getElementById("projekt").value.trim();
     const now = new Date();
-    const dateStr = now.toISOString().split("T")[0]; // z. B. 2025-06-10
-    const timeStr = now.toTimeString().slice(0,5).replace(":", "-"); // z. B. 14-30
+    const dateStr = now.toISOString().split("T")[0];
+    const timeStr = now.toTimeString().slice(0,5).replace(":", "-");
     const safeProjekt = projekt !== "" ? "_" + projekt.replaceAll(" ", "_") : "";
-    a.download = `Funde${safeProjekt}_${dateStr}_${timeStr}.csv`;  // Backticks statt Anführungszeichen
-    a.click();
-    URL.revokeObjectURL(url);
+    return `Funde${safeProjekt}_${dateStr}_${timeStr}.csv`;
 }
+
 
 // Tabelle sortieren
 function sortTable(colIndex) {
