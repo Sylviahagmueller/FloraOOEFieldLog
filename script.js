@@ -80,7 +80,7 @@ function saveFund(input, timestamp, lat, lon) {
         projekt: projekt
     });
 
-    document.getElementById("status").textContent = `Fund gespeichert: ${arten[input]}`;
+    //document.getElementById("status").textContent = `Fund gespeichert: ${arten[input]}`;
     document.getElementById("search").value = "";
     document.getElementById("suggestions").innerHTML = "";
     updateList();
