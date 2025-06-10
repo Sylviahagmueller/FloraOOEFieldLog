@@ -58,10 +58,10 @@ function recordFund() {
         const lat = position.coords.latitude;
         const lon = position.coords.longitude;
         status.textContent = `Standort erfasst: ${lat.toFixed(5)}, ${lon.toFixed(5)}`;
-        saveFund(input, timestamp, lat, lon);
+        //saveFund(input, timestamp, lat, lon);
     }, error => {
         status.textContent = `Standort konnte nicht erfasst werden: ${error.message}`;
-        saveFund(input, timestamp, "N/A", "N/A");
+        //saveFund(input, timestamp, "N/A", "N/A");
     });
 }
 
