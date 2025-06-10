@@ -118,7 +118,13 @@ function exportCSV() {
     const url = URL.createObjectURL(blob);
     const a = document.createElement("a");
     a.href = url;
-    a.download = "funde.csv";
+
+    const projekt = document.getElementById("projekt").value.trim();
+    const now = new Date();
+    const dateStr = now.toISOString().split("T")[0]; // z. B. 2025-06-10
+    const timeStr = now.toTimeString().slice(0,5).replace(":", "-"); // z. B. 14-30
+    const safeProjekt = projekt !== "" ? "_" + projekt.replaceAll(" ", "_") : "";
+    a.download = "Funde${safeProjekt}_${dateStr}_${timeStr}.csv";
     a.click();
     URL.revokeObjectURL(url);
 }
