@@ -111,8 +111,9 @@ function updateList() {
 }
 
 // CSV exportieren
+
 function exportCSV() {
-    let csv = "Datum;Laenge;Breite;Dets;Gattung;Art\n";
+    let csv = "Datum;Länge;Breite;Dets;Gattung;Art;Bemerkung\n";
 
     funde.forEach(f => {
         const date = new Date(f.zeit);
@@ -120,10 +121,11 @@ function exportCSV() {
         const laenge = f.lon || "";
         const breite = f.lat || "";
         const dets = f.beobachter || "";
+        const bemerkung = f.projekt || "";
         const [gattung, ...rest] = f.name.split(" ");
         const art = rest.join(" ");
 
-        csv += `${datum};${laenge};${breite};${dets};${gattung};${art}\n`;
+        csv += `${datum};${laenge};${breite};${dets};${gattung};${art};${bemerkung}\n`;
     });
 
     const blob = new Blob([csv], { type: "text/csv" });
@@ -149,6 +151,7 @@ function exportCSV() {
         URL.revokeObjectURL(url);
     }
 }
+
 
 
 function generateFilename() {
