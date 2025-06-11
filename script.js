@@ -112,7 +112,7 @@ function updateList() {
 
 // CSV exportieren
 function exportCSV() {
-    let csv = "Datum;Länge;Breite;Dets;Gattung;Art\n";
+    let csv = "Datum;Laenge;Breite;Dets;Gattung;Art\n";
 
     funde.forEach(f => {
         const date = new Date(f.zeit);
