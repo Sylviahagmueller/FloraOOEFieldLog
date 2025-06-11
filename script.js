@@ -122,8 +122,8 @@ function exportCSV() {
     const fileName = generateFilename();
     const file = new File([blob], fileName, { type: "text/csv" });
 
-    // Prüfe, ob Teilen möglich ist (Mobilgerät)
-    if (navigator.canShare && navigator.canShare({ files: [file] })) {
+    if (isMobile() && navigator.canShare && navigator.canShare({ files: [file] })) {
+        // 📱 Nur auf echten Mobilgeräten teilen
         navigator.share({
             title: "Funde exportieren",
             text: "Hier ist die exportierte Fundliste als CSV-Datei.",
@@ -133,7 +133,7 @@ function exportCSV() {
             console.error("Share error:", error);
         });
     } else {
-        // Fallback für Desktop: normaler Download
+        // 💻 Immer Download auf Desktop oder bei fehlendem Share
         const url = URL.createObjectURL(blob);
         const a = document.createElement("a");
         a.href = url;
@@ -152,6 +152,10 @@ function generateFilename() {
     const timeStr = now.toTimeString().slice(0,5).replace(":", "-");
     const safeProjekt = projekt !== "" ? "_" + projekt.replaceAll(" ", "_") : "";
     return `Funde${safeProjekt}_${dateStr}_${timeStr}.csv`;
+}
+
+function isMobile() {
+    return /iPhone|iPad|Android|Mobile/i.test(navigator.userAgent);
 }
 
 
