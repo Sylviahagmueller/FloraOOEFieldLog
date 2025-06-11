@@ -18,27 +18,38 @@ fetch("arten.json")
 );*/
 
 // Vorschläge anzeigen
+let selectedSuggestionIndex = -1;
+
 function showSuggestions() {
-    const input = document.getElementById("search").value.toLowerCase();
+    const inputEl = document.getElementById("search");
+    const input = inputEl.value.toLowerCase().replace(/\s+/g, "");
     const suggestionBox = document.getElementById("suggestions");
     suggestionBox.innerHTML = "";
+    selectedSuggestionIndex = -1;
 
     if (input.length < 2) return;
 
-    const matches = Object.entries(arten).filter(([k, v]) =>
-        k.includes(input) || v.toLowerCase().includes(input)
-    );
+    const matches = Object.entries(arten)
+        .filter(([k, v]) =>
+            k.includes(input) || v.toLowerCase().includes(input)
+        )
+        .slice(0, 10);
 
-    matches.slice(0, 10).forEach(([k, v]) => {
+    matches.forEach(([k, v], index) => {
         const div = document.createElement("div");
-        div.textContent = `${k} – ${v}`;
+        div.textContent = `${k.toUpperCase()} – ${v}`;
+        div.dataset.kuerzel = k;
+        div.tabIndex = -1;
+
         div.onclick = () => {
-            document.getElementById("search").value = k;
+            inputEl.value = k;
             suggestionBox.innerHTML = "";
         };
+
         suggestionBox.appendChild(div);
     });
 }
+
 
 // Fund speichern
 function recordFund() {
@@ -181,3 +192,29 @@ function sortTable(colIndex) {
     table.setAttribute("data-sort-dir", ascending ? "asc" : "desc");
     rows.forEach(row => table.tBodies[0].appendChild(row));
 }
+
+//arrow down in combobox
+document.getElementById("search").addEventListener("keydown", function (e) {
+    const items = document.querySelectorAll("#suggestions div");
+    if (items.length === 0) return;
+
+    if (e.key === "ArrowDown") {
+        e.preventDefault();
+        selectedSuggestionIndex = (selectedSuggestionIndex + 1) % items.length;
+    } else if (e.key === "ArrowUp") {
+        e.preventDefault();
+        selectedSuggestionIndex = (selectedSuggestionIndex - 1 + items.length) % items.length;
+    } else if (e.key === "Enter") {
+        e.preventDefault();
+        if (selectedSuggestionIndex >= 0) {
+            const selected = items[selectedSuggestionIndex];
+            document.getElementById("search").value = selected.dataset.kuerzel;
+            document.getElementById("suggestions").innerHTML = "";
+        }
+    }
+
+    items.forEach((item, index) => {
+        item.style.backgroundColor = index === selectedSuggestionIndex ? "#d8f3dc" : "white";
+    });
+});
+
