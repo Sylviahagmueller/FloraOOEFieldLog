@@ -112,10 +112,18 @@ function updateList() {
 
 // CSV exportieren
 function exportCSV() {
-    let csv = "Kürzel,Name,Zeit,Lat,Lon,Beobachter,Projekt\n";
+    let csv = "Datum;Länge;Breite;Dets;Gattung;Art\n";
 
     funde.forEach(f => {
-        csv += `${f.kuerzel},${f.name},${f.zeit},${f.lat},${f.lon},${f.beobachter},${f.projekt}\n`;
+        const date = new Date(f.zeit);
+        const datum = date.toLocaleDateString("de-DE") + " " + date.toLocaleTimeString("de-DE", { hour: "2-digit", minute: "2-digit" });
+        const laenge = f.lon || "";
+        const breite = f.lat || "";
+        const dets = f.beobachter || "";
+        const [gattung, ...rest] = f.name.split(" ");
+        const art = rest.join(" ");
+
+        csv += `${datum};${laenge};${breite};${dets};${gattung};${art}\n`;
     });
 
     const blob = new Blob([csv], { type: "text/csv" });
@@ -123,17 +131,14 @@ function exportCSV() {
     const file = new File([blob], fileName, { type: "text/csv" });
 
     if (isMobile() && navigator.canShare && navigator.canShare({ files: [file] })) {
-        // 📱 Nur auf echten Mobilgeräten teilen
         navigator.share({
             title: "Funde exportieren",
-            text: "Hier ist die exportierte Fundliste als CSV-Datei.",
+            text: "Fundliste als CSV-Datei",
             files: [file]
         }).catch(error => {
             alert("Teilen abgebrochen oder nicht verfügbar.");
-            console.error("Share error:", error);
         });
     } else {
-        // 💻 Immer Download auf Desktop oder bei fehlendem Share
         const url = URL.createObjectURL(blob);
         const a = document.createElement("a");
         a.href = url;
@@ -144,6 +149,7 @@ function exportCSV() {
         URL.revokeObjectURL(url);
     }
 }
+
 
 function generateFilename() {
     const projekt = document.getElementById("projekt").value.trim();
